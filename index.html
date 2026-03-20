@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Lato:wght@300;400&display=swap');
+
+  :root {
+    --pink: #f2a7b8;
+    --pink-light: #fde8ee;
+    --pink-dark: #c97a90;
+    --text: #4a2a35;
+    --text-light: #9e6877;
+    --glitch-red: #ff2a2a;
+    --glitch-cyan: #00f5ff;
+    --green: #39ff14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    width: 100%; height: 100%;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+  }
+
+  /* ── INTRO PAGE ── */
+  #intro {
+    position: fixed;
+    inset: 0;
+    background: linear-gradient(160deg, #fde8ee 0%, #fbd5e0 50%, #f9c2d2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    z-index: 10;
+    transition: opacity 0.5s ease;
+  }
+
+  #intro.hide { opacity: 0; pointer-events: none; }
+
+  /* subtle floating petals in background */
+  .petal {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: rgba(242,167,184,0.4);
+    border-radius: 50% 0 50% 0;
+    animation: float linear infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes float {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+    10%  { opacity: 1; }
+    90%  { opacity: 0.6; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+  }
+
+  .intro-content {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .gif-wrap {
+    width: clamp(150px, 25vw, 220px);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.3s forwards, bobble 4s ease-in-out 1s infinite;
+  }
+
+  .gif-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @keyframes bobble {
+    0%,100% { transform: translateY(0px); }
+    50%     { transform: translateY(-10px); }
+  }
+
+  .greeting {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+    letter-spacing: 0.25em;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.6s forwards;
+  }
+
+  .main-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 9vw, 6.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    line-height: 1;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 0.7s ease 0.8s forwards;
+  }
+
+  .tagline {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 1s forwards;
+  }
+
+  .begin-btn {
+    padding: 0.85rem 2.75rem;
+    background: var(--pink-dark);
+    border: none;
+    border-radius: 50px;
+    color: #fff;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(201,122,144,0.35);
+    transition: all 0.3s ease;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 1.2s forwards;
+  }
+
+  .begin-btn:hover {
+    background: var(--pink);
+    box-shadow: 0 6px 28px rgba(201,122,144,0.5);
+    transform: translateY(-2px);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── ERROR SCREEN ── */
+  #error-screen {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 50;
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 4rem 6vw;
+    font-family: 'Share Tech Mono', monospace;
+    color: #e8e8e8;
+  }
+
+  /* load the mono font for error screen */
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  #error-screen.active { display: flex; }
+
+  #error-screen::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      rgba(255,42,42,0.02) 3px, rgba(255,42,42,0.02) 4px
+    );
+    pointer-events: none;
+  }
+
+  .err-line {
+    font-size: clamp(0.65rem, 1.4vw, 0.85rem);
+    line-height: 2.1;
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 100%;
+  }
+
+  .err-line.show { opacity: 1; }
+
+  .err-line.big {
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    color: var(--glitch-red);
+    margin-bottom: 0.5rem;
+  }
+
+  .err-line .red   { color: var(--glitch-red); }
+  .err-line .cyan  { color: var(--glitch-cyan); }
+  .err-line .white { color: #fff; }
+  .err-line .dim   { color: rgba(232,232,232,0.3); }
+  .err-line .grn   { color: var(--green); }
+
+  .err-bar {
+    height: 2px;
+    background: var(--glitch-red);
+    width: 0%;
+    margin: 0.5rem 0 0.75rem;
+    opacity: 0;
+    box-shadow: 0 0 8px var(--glitch-red);
+    transition: width 0.08s linear;
+  }
+
+  .err-bar.show { opacity: 1; }
+
+  #repair-btn {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.85rem 2.5rem;
+    background: transparent;
+    border: 1px solid var(--green);
+    color: var(--green);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    text-decoration: none;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s;
+    box-shadow: 0 0 15px rgba(57,255,20,0.1);
+  }
+
+  #repair-btn.show {
+    opacity: 1;
+    pointer-events: all;
+    animation: btnPulse 2s infinite;
+  }
+
+  #repair-btn:hover { background: var(--green); color: #000; }
+
+  @keyframes btnPulse {
+    0%,100% { box-shadow: 0 0 15px rgba(57,255,20,0.15); }
+    50%     { box-shadow: 0 0 35px rgba(57,255,20,0.4); }
+  }
+
+  /* red flash overlay */
+  #glitch-flash {
+    position: fixed;
+    inset: 0;
+    background: var(--glitch-red);
+    opacity: 0;
+    z-index: 45;
+    pointer-events: none;
+  }
+
+  #glitch-flash.flash {
+    animation: flashAnim 0.5s steps(1) forwards;
+  }
+
+  @keyframes flashAnim {
+    0%  { opacity: 0.8; }
+    25% { opacity: 0; }
+    50% { opacity: 0.5; }
+    75% { opacity: 0.1; }
+    100%{ opacity: 0; }
+  }
+
+  @keyframes shake {
+    0%,100%{transform:translate(0)}
+    15%{transform:translate(-6px,3px)}
+    30%{transform:translate(6px,-3px)}
+    45%{transform:translate(-4px,2px)}
+    60%{transform:translate(4px,-2px)}
+    75%{transform:translate(-2px,1px)}
+    90%{transform:translate(2px,-1px)}
+  }
+
+  #error-screen.shake { animation: shake 0.5s ease; }
+</style>
+</head>
+<body>
+
+  <!-- floating petals -->
+  <script>
+    for (let i = 0; i < 12; i++) {
+      const p = document.createElement('div');
+      p.className = 'petal';
+      p.style.left = Math.random() * 100 + 'vw';
+      p.style.top  = Math.random() * 100 + 'vh';
+      p.style.width  = (6 + Math.random() * 8) + 'px';
+      p.style.height = (6 + Math.random() * 8) + 'px';
+      p.style.animationDuration = (8 + Math.random() * 10) + 's';
+      p.style.animationDelay   = (Math.random() * 8) + 's';
+      p.style.opacity = 0;
+      document.body.appendChild(p);
+    }
+  </script>
+
+  <div id="glitch-flash"></div>
+
+  <!-- ── INTRO ── -->
+  <div id="intro">
+    <div class="intro-content">
+
+      <div class="gif-wrap">
+        <!--
+          REPLACE the src below with your gif path.
+          Download a cute hugging/characters gif and put it in your repo folder.
+          e.g. src="hug.gif"
+        -->
+        <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.icegif.com%2Fwp-content%2Fuploads%2F2023%2F10%2Ficegif-89.gif&f=1&nofb=1&ipt=5223d18f5e3acaf6081ff92a3b2dab783ae7ea7a511cd663c5398de8082bba37" alt="cute gif">
+      </div>
+
+      <p class="greeting">happy birthday!!</p>
+      <h1 class="main-name">Aneeqah<3</h1>
+      <p class="tagline">click below for your surprise dearie hehehehe</p>
+
+      <button class="begin-btn" onclick="triggerError()">Open Your Surprise →</button>
+    </div>
+  </div>
+
+  <!-- ── ERROR SCREEN ── -->
+  <div id="error-screen">
+    <div class="err-line big show" id="e0" style="opacity:0">!! CRITICAL ERROR !!</div>
+    <div class="err-line" id="e1"><span class="red">MEMORY_ARCHIVE.sys</span> — <span class="white">CORRUPTION DETECTED</span></div>
+    <div class="err-bar" id="err-bar"></div>
+    <div class="err-line" id="e2"><span class="dim">scanning sectors</span> <span class="red">.............. [FAILED]</span></div>
+    <div class="err-line" id="e3"><span class="dim">error code:</span> <span class="red">0xC000_03A2 — DATA_CORRUPTED</span></div>
+    <div class="err-line" id="e4"><span class="dim">affected files:</span> <span class="cyan">memory_fragments [3]</span></div>
+    <div class="err-line" id="e5"><span class="white">recovery required before access can be granted.</span></div>
+    <div class="err-line" id="e6"><span class="grn">▸ repair the fragments to unlock your surprise.</span></div>
+
+    <!-- REPLACE page2.html with your actual page 2 path -->
+    <a href="page2.html" id="repair-btn">Begin Repair →</a>
+  </div>
+
+<script>
+  function triggerError() {
+    // fade out intro
+    document.getElementById('intro').classList.add('hide');
+
+    // red flash
+    const flash = document.getElementById('glitch-flash');
+    flash.classList.add('flash');
+
+    setTimeout(() => {
+      const screen = document.getElementById('error-screen');
+      screen.classList.add('active');
+
+      // shake
+      setTimeout(() => screen.classList.add('shake'), 50);
+      setTimeout(() => screen.classList.remove('shake'), 600);
+
+      // reveal lines
+      const lines  = ['e0','e1','e2','e3','e4','e5','e6'];
+      const delays = [0, 350, 650, 1050, 1450, 1850, 2350];
+
+      lines.forEach((id, i) => {
+        setTimeout(() => {
+          document.getElementById(id).classList.add('show');
+          if (id === 'e1') animateErrBar();
+        }, delays[i]);
+      });
+
+      // show button after last line
+      setTimeout(() => {
+        document.getElementById('repair-btn').classList.add('show');
+      }, delays[delays.length - 1] + 600);
+
+    }, 350);
+  }
+
+  function animateErrBar() {
+    const bar = document.getElementById('err-bar');
+    bar.classList.add('show');
+    let w = 0;
+    const iv = setInterval(() => {
+      w += 2.5;
+      bar.style.width = w + '%';
+      if (w >= 100) clearInterval(iv);
+    }, 12);
+  }
+</script>
+
+</body>
+</html>
