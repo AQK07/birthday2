@@ -38,7 +38,6 @@
     z-index: 500;
   }
 
-  /* ── GLITCH OVERLAY ── */
   #glitch-overlay {
     position: fixed;
     inset: 0;
@@ -92,7 +91,6 @@
     100% { filter: brightness(100); }
   }
 
-  /* ── BIOS SCREEN ── */
   #bios-screen {
     position: fixed;
     inset: 0;
@@ -133,16 +131,24 @@
   .bios-line .warn { color: #ffcc00; }
 
   .bios-bar {
+    display: block;
     height: 3px;
-    background: var(--green);
     width: 0%;
-    margin: 1rem 0;
+    background: var(--green);
+    margin: 0.8rem 0;
     box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff1466;
     opacity: 0;
-    transition: width 0.08s linear;
   }
 
-  .bios-bar.show { opacity: 1; }
+  .bios-bar.show {
+    opacity: 1;
+    animation: barFill 1.5s linear forwards;
+  }
+
+  @keyframes barFill {
+    0%   { width: 0%; }
+    100% { width: 100%; }
+  }
 
   .cursor-blink {
     display: inline-block;
@@ -177,7 +183,6 @@
     50%     { box-shadow: 0 0 35px rgba(0,255,65,0.4); }
   }
 
-  /* ── MAIN LAYOUT ── */
   #layout {
     position: relative;
     z-index: 10;
@@ -286,7 +291,6 @@
   .feedback.wrong { color: var(--glitch-red); }
   .feedback.right { color: var(--glitch-cyan); }
 
-  /* ── LOCKED PANEL ── */
   .panel.locked .panel-body { opacity: 0; pointer-events: none; }
   .panel.locked .panel-desc { opacity: 0.15; }
   .panel.locked .panel-title { opacity: 0.15; }
@@ -322,9 +326,7 @@
   .panel.locked .lock-overlay { opacity: 1; }
   .panel:not(.locked) .lock-overlay { opacity: 0; }
 
-  .panel.unlocking {
-    animation: unlockFlash 0.6s ease forwards;
-  }
+  .panel.unlocking { animation: unlockFlash 0.6s ease forwards; }
 
   @keyframes lockPulse {
     0%,100% { opacity: 0.4; } 50% { opacity: 0.8; }
@@ -335,6 +337,7 @@
     30%  { background: rgba(0,168,41,0.08); }
     100% { background: transparent; }
   }
+
   #pattern-instruction {
     font-size: 0.58rem;
     color: rgba(232,232,232,0.3);
@@ -376,7 +379,6 @@
 
   .pat-block:nth-child(odd)  { animation-delay: 0.5s; background: rgba(0,245,255,0.06); border-color: rgba(0,245,255,0.1); }
   .pat-block:nth-child(3n)   { animation-delay: 1.3s; }
-
   .pat-block:hover { background: rgba(0,245,255,0.15); border-color: var(--glitch-cyan); }
 
   .pat-block.active {
@@ -415,7 +417,6 @@
     flex-shrink: 0;
   }
 
-  /* ── PUZZLE 2: ODD ONE OUT ── */
   #p2-round-label {
     font-size: 0.55rem;
     color: rgba(232,232,232,0.25);
@@ -444,25 +445,13 @@
   }
 
   .sym-cell:hover { background: rgba(0,245,255,0.1); border-color: var(--glitch-cyan); }
-
-  .sym-cell.correct-flash {
-    background: rgba(0,245,255,0.3) !important;
-    border-color: var(--glitch-cyan) !important;
-    animation: correctPop 0.4s ease forwards;
-  }
-
-  .sym-cell.wrong-flash {
-    background: rgba(255,42,42,0.3) !important;
-    border-color: var(--glitch-red) !important;
-  }
+  .sym-cell.correct-flash { background: rgba(0,245,255,0.3) !important; border-color: var(--glitch-cyan) !important; animation: correctPop 0.4s ease forwards; }
+  .sym-cell.wrong-flash { background: rgba(255,42,42,0.3) !important; border-color: var(--glitch-red) !important; }
 
   @keyframes correctPop {
-    0%   { transform: scale(1); }
-    50%  { transform: scale(1.15); }
-    100% { transform: scale(1); }
+    0%{transform:scale(1)} 50%{transform:scale(1.15)} 100%{transform:scale(1)}
   }
 
-  /* ── PUZZLE 3: SIGNAL MATCH ── */
   #p3-instruction {
     font-size: 0.58rem;
     color: rgba(232,232,232,0.3);
@@ -503,24 +492,9 @@
   }
 
   .sig-item:hover { background: rgba(0,245,255,0.1); border-color: rgba(0,245,255,0.4); }
-
-  .sig-item.selected {
-    background: rgba(0,245,255,0.15);
-    border-color: var(--glitch-cyan);
-    box-shadow: 0 0 8px rgba(0,245,255,0.2);
-  }
-
-  .sig-item.matched {
-    background: rgba(0,245,255,0.08);
-    border-color: rgba(0,245,255,0.2);
-    opacity: 0.4;
-    pointer-events: none;
-  }
-
-  .sig-item.wrong-flash {
-    background: rgba(255,42,42,0.25) !important;
-    border-color: var(--glitch-red) !important;
-  }
+  .sig-item.selected { background: rgba(0,245,255,0.15); border-color: var(--glitch-cyan); box-shadow: 0 0 8px rgba(0,245,255,0.2); }
+  .sig-item.matched { background: rgba(0,245,255,0.08); border-color: rgba(0,245,255,0.2); opacity: 0.4; pointer-events: none; }
+  .sig-item.wrong-flash { background: rgba(255,42,42,0.25) !important; border-color: var(--glitch-red) !important; }
 
   .signal-divider {
     display: flex;
@@ -531,11 +505,7 @@
     height: 100%;
   }
 
-  .div-dot {
-    width: 3px; height: 3px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 50%;
-  }
+  .div-dot { width: 3px; height: 3px; background: rgba(255,255,255,0.1); border-radius: 50%; }
 
   #p3-pairs-left {
     font-size: 0.55rem;
@@ -548,7 +518,6 @@
 </head>
 <body>
 
-  <!-- REPLACE glitch.jpg with your image -->
   <div id="glitch-overlay">
     <div class="overlay-panel" id="panel1">
       <img src="glitch.jpg" alt="">
@@ -564,7 +533,6 @@
     </div>
   </div>
 
-  <!-- BIOS SCREEN -->
   <div id="bios-screen">
     <div class="bios-line" id="b0">RECOVERY SYSTEM v2.4.1 — INITIALIZING...</div>
     <div class="bios-line" id="b1">scanning memory sectors<span class="cursor-blink"></span></div>
@@ -572,16 +540,15 @@
     <div class="bios-line" id="b3">CORRUPTED_FILE_02 .............. <span class="ok">[RESTORED]</span></div>
     <div class="bios-line" id="b4">CORRUPTED_FILE_03 .............. <span class="ok">[RESTORED]</span></div>
     <div class="bios-line" id="b5">corruption level: <span class="err">CRITICAL</span> → <span class="ok">NONE</span></div>
-    <div class="bios-bar" id="bar1"></div>
-    <div class="bios-line" id="b6">rebuilding page<span class="cursor-blink"></span></div>
+    <div class="bios-line" id="b6"><span class="warn">repairing page...</span><span class="cursor-blink"></span></div>
+    <div style="width:100%;overflow:hidden;"><div class="bios-bar" id="bar1"></div></div>
     <div class="bios-line big" id="b7">REPAIR COMPLETE.</div>
-    <div class="bios-line" id="b8"><span class="warn">rebuilding page...</span></div>
-    <div class="bios-bar" id="bar2"></div>
-    <div class="bios-line" id="b9">rebuild complete. <span class="ok">page ready.</span></div>
+    <div class="bios-line" id="b8">rebuilding page<span class="cursor-blink"></span></div>
+    <div style="width:100%;overflow:hidden;"><div class="bios-bar" id="bar2"></div></div>
+    <div class="bios-line big" id="b9">PAGE REBUILT.</div>
     <a href="#" id="view-btn">CLICK TO VIEW →</a>
   </div>
 
-  <!-- MAIN LAYOUT -->
   <div id="layout">
     <div id="top-bar">
       <span class="label">// RECOVERY_SEQUENCE.exe</span>
@@ -594,7 +561,6 @@
 
     <div id="columns">
 
-      <!-- PANEL 1: PATTERN CLICK -->
       <div class="panel" id="card1">
         <span class="solved-badge">✓ RESTORED</span>
         <div class="panel-num">// CORRUPTED_FILE_01</div>
@@ -612,7 +578,6 @@
         </div>
       </div>
 
-      <!-- PANEL 2: ODD ONE OUT -->
       <div class="panel locked" id="card2">
         <div class="lock-overlay">
           <div class="lock-icon">⬛</div>
@@ -630,7 +595,6 @@
         </div>
       </div>
 
-      <!-- PANEL 3: SIGNAL MATCH -->
       <div class="panel locked" id="card3">
         <div class="lock-overlay">
           <div class="lock-icon">⬛</div>
@@ -657,7 +621,7 @@
   </div>
 
 <script>
-  const PAGE3_URL = 'final.html'; // REPLACE with your page 3 path
+  const PAGE3_URL = 'final.html';
   document.getElementById('view-btn').href = PAGE3_URL;
 
   const solved = { p1: false, p2: false, p3: false };
@@ -693,18 +657,22 @@
     if (solved.p1 && solved.p2 && solved.p3) setTimeout(launchBIOS, 900);
   }
 
-  // ── BIOS ──
   function launchBIOS() {
     document.getElementById('bios-screen').classList.add('active');
-    const lines  = ['b0','b1','b2','b3','b4','b5','b6','b7','b8'];
-    const delays = [0, 350, 800, 1100, 1400, 1750, 2200, 2900, 3500];
+    const lines  = ['b0','b1','b2','b3','b4','b5','b6'];
+    const delays = [0, 350, 800, 1100, 1400, 1750, 2200];
     lines.forEach((id, i) => {
       setTimeout(() => {
         document.getElementById(id).classList.add('show');
-        if (id === 'b5') animateBar('bar1');
-        if (id === 'b8') animateBar('bar2', () => {
-          document.getElementById('b9').classList.add('show');
-          setTimeout(() => document.getElementById('view-btn').classList.add('show'), 400);
+        if (id === 'b6') animateBar('bar1', () => {
+          document.getElementById('b7').classList.add('show');
+          setTimeout(() => {
+            document.getElementById('b8').classList.add('show');
+            animateBar('bar2', () => {
+              document.getElementById('b9').classList.add('show');
+              setTimeout(() => document.getElementById('view-btn').classList.add('show'), 400);
+            });
+          }, 600);
         });
       }, delays[i]);
     });
@@ -713,26 +681,13 @@
   function animateBar(id, cb) {
     const bar = document.getElementById(id);
     bar.classList.add('show');
-    let w = 0;
-    const iv = setInterval(() => {
-      w += 1.5;
-      bar.style.width = w + '%';
-      if (w >= 100) { clearInterval(iv); if (cb) cb(); }
-    }, 18);
+    if (cb) setTimeout(cb, 1500);
   }
 
-  // ══════════════════════════════════════════
-  // PUZZLE 1 — PATTERN CLICK
-  // Click 12 blocks in a specific secret order
-  // ══════════════════════════════════════════
   const TOTAL_BLOCKS = 12;
-  // Secret pattern: indices 0-11 in a 4x3 grid, reading left→right top→bottom
-  // This spells out an L-shape: 0,4,8,9,10,11
   const SECRET_PATTERN = [0, 4, 8, 9, 10, 11];
   const glitchChars = ['▓','▒','░','█','▄','▀','■','▪','◆','◈','⌗','⌀'];
 
-  // Show the pattern as grid positions (1-indexed, human readable)
-  // We show it as a visual hint: e.g. "↙ → → →" shape description
   document.getElementById('pattern-display').textContent =
     SECRET_PATTERN.map(i => i + 1).join(' → ');
 
@@ -754,7 +709,6 @@
   function handlePatternClick(idx) {
     const blocks = patGrid.querySelectorAll('.pat-block');
     if (idx === SECRET_PATTERN[currentStep]) {
-      // Correct
       blocks[idx].classList.add('active');
       blocks[idx].querySelector('.step-num').textContent = currentStep + 1;
       currentStep++;
@@ -766,13 +720,11 @@
         setTimeout(() => markSolved('card1', 'p1', 0), 500);
       }
     } else {
-      // Wrong — flash red and reset
       blocks[idx].classList.add('wrong-flash');
       document.getElementById('p1-feedback').textContent = '✗ wrong block. resetting.';
       document.getElementById('p1-feedback').className = 'feedback wrong';
       setTimeout(() => {
         blocks[idx].classList.remove('wrong-flash');
-        // Reset all active blocks
         blocks.forEach(b => {
           b.classList.remove('active');
           b.querySelector('.step-num').textContent = '';
@@ -784,29 +736,10 @@
     }
   }
 
-  // ══════════════════════════════════════════
-  // PUZZLE 2 — ODD ONE OUT
-  // 3 rounds, each with a grid where one symbol differs
-  // ══════════════════════════════════════════
   const ODD_ROUNDS = [
-    // Round 1: 3x3 grid, mostly ◆ but one ◇
-    {
-      cols: 3, rows: 3,
-      cells: ['◆','◆','◆','◆','◇','◆','◆','◆','◆'],
-      oddIndex: 4
-    },
-    // Round 2: 4x3 grid, mostly ▲ but one △ (subtler)
-    {
-      cols: 4, rows: 3,
-      cells: ['▲','▲','▲','▲','▲','▲','△','▲','▲','▲','▲','▲'],
-      oddIndex: 6
-    },
-    // Round 3: 4x4 grid, mostly ■ but one □ (harder to spot)
-    {
-      cols: 4, rows: 4,
-      cells: ['■','■','■','■','■','■','■','■','■','□','■','■','■','■','■','■'],
-      oddIndex: 9
-    }
+    { cols: 3, rows: 3, cells: ['◆','◆','◆','◆','◇','◆','◆','◆','◆'], oddIndex: 4 },
+    { cols: 4, rows: 3, cells: ['▲','▲','▲','▲','▲','▲','△','▲','▲','▲','▲','▲'], oddIndex: 6 },
+    { cols: 4, rows: 4, cells: ['■','■','■','■','■','■','■','■','■','□','■','■','■','■','■','■'], oddIndex: 9 }
   ];
 
   let currentRound = 0;
@@ -858,10 +791,6 @@
 
   renderOddRound(0);
 
-  // ══════════════════════════════════════════
-  // PUZZLE 3 — SIGNAL MATCH
-  // Match 5 pairs across two columns
-  // ══════════════════════════════════════════
   const PAIRS = [
     { left: '⚡', right: '⚡' },
     { left: '◈', right: '◈' },
@@ -870,7 +799,6 @@
     { left: '⌘', right: '⌘' },
   ];
 
-  // Shuffle right column
   function shuffle(arr) {
     const a = [...arr];
     for (let i = a.length - 1; i > 0; i--) {
@@ -891,14 +819,13 @@
   const rightCol = document.getElementById('right-col');
   const divider  = document.getElementById('sig-divider');
 
-  // Divider dots
   for (let i = 0; i < 7; i++) {
     const d = document.createElement('div');
     d.className = 'div-dot';
     divider.appendChild(d);
   }
 
-  leftSyms.forEach((sym, i) => {
+  leftSyms.forEach((sym) => {
     const el = document.createElement('div');
     el.className = 'sig-item';
     el.textContent = sym;
@@ -908,7 +835,7 @@
     leftCol.appendChild(el);
   });
 
-  rightSyms.forEach((sym, i) => {
+  rightSyms.forEach((sym) => {
     const el = document.createElement('div');
     el.className = 'sig-item';
     el.textContent = sym;
@@ -932,10 +859,8 @@
       el.classList.add('selected');
     }
 
-    // If both selected, check match
     if (selectedLeft && selectedRight) {
       if (selectedLeft.dataset.sym === selectedRight.dataset.sym) {
-        // Match!
         selectedLeft.classList.remove('selected');
         selectedRight.classList.remove('selected');
         selectedLeft.classList.add('matched');
@@ -947,11 +872,8 @@
         document.getElementById('p3-feedback').className = 'feedback right';
         selectedLeft = null;
         selectedRight = null;
-        if (pairsLeft === 0) {
-          setTimeout(() => markSolved('card3', 'p3', 2), 500);
-        }
+        if (pairsLeft === 0) setTimeout(() => markSolved('card3', 'p3', 2), 500);
       } else {
-        // No match — flash and deselect
         selectedLeft.classList.add('wrong-flash');
         selectedRight.classList.add('wrong-flash');
         document.getElementById('p3-feedback').textContent = '✗ no match.';
