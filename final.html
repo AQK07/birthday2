@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Fairy Realm Scroll</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IM+Fell+English:ital@0;1&family=Lato:wght@300;400&display=swap');
+
+  :root {
+    --cream: #fdf6e9;
+    --parchment: #f5e6c8;
+    --ink: #2c1810;
+    --ink-light: #5c3d2e;
+    --gold: #c9a84c;
+    --gold-light: #e8d5a3;
+    --pink: #d4829a;
+    --divider: #c9a84c;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { background: #1a0f0a; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'IM Fell English', serif;
+    min-height: 100vh;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+    opacity: 0;
+    animation: pageReveal 1.2s ease 0.3s forwards;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.6;
+  }
+
+  @keyframes pageReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── HEADER ── */
+  .newspaper-header {
+    text-align: center;
+    border-bottom: 3px double var(--divider);
+    padding-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .kingdom-label {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+  }
+
+  .newspaper-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 6vw, 3.2rem);
+    font-weight: 900;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .newspaper-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: clamp(0.65rem, 1.3vw, 0.78rem);
+    color: var(--ink-light);
+    margin-bottom: 0.5rem;
+  }
+
+  .header-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Lato', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+    padding: 0.3rem 0;
+    margin-top: 0.4rem;
+  }
+
+  .divider {
+    text-align: center;
+    color: var(--gold);
+    font-size: 0.85rem;
+    margin: 0.6rem 0;
+    letter-spacing: 0.5em;
+  }
+
+  /* ── HEADLINE ── */
+  .headline-section {
+    text-align: center;
+    padding: 0.75rem 0 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .edition-tag {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--cream);
+    font-family: 'Lato', sans-serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    padding: 0.2rem 0.75rem;
+    margin-bottom: 0.6rem;
+    text-transform: uppercase;
+  }
+
+  .main-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 4.5vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 0.4rem;
+  }
+
+  .main-headline em { font-style: italic; color: var(--pink); }
+
+  .deck {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: clamp(0.78rem, 1.5vw, 0.9rem);
+    color: var(--ink-light);
+    line-height: 1.6;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* ── TWO COLUMNS ── */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    gap: 0 1.5rem;
+    margin-bottom: 1.25rem;
+    border-top: 2px solid var(--divider);
+    padding-top: 0.75rem;
+  }
+
+  .col-divider { background: var(--parchment); }
+
+  .col-label {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.48rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--gold-light);
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: clamp(0.78rem, 1.3vw, 0.88rem);
+    line-height: 1.85;
+    color: var(--ink);
+    margin-bottom: 0.65rem;
+    text-align: justify;
+    hyphens: auto;
+  }
+
+  p:first-of-type::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    font-weight: 700;
+    float: left;
+    line-height: 0.75;
+    margin-right: 0.08em;
+    margin-top: 0.1em;
+    color: var(--pink);
+  }
+
+  .pull-quote {
+    border-top: 1px solid var(--divider);
+    border-bottom: 1px solid var(--divider);
+    padding: 0.5rem 0.4rem;
+    margin: 0.6rem 0;
+    text-align: center;
+  }
+
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.78rem, 1.4vw, 0.9rem);
+    color: var(--ink);
+    line-height: 1.5;
+    text-align: center;
+    margin: 0;
+  }
+
+  .pull-quote p::first-letter { all: unset; }
+
+  .pull-quote cite {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-top: 0.3rem;
+  }
+
+  /* ── CLOSING ── */
+  .closing {
+    border-top: 3px double var(--divider);
+    padding-top: 0.75rem;
+    text-align: center;
+  }
+
+  .closing-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 0.6rem;
+  }
+
+  .closing p {
+    max-width: 560px;
+    margin: 0 auto 0.6rem;
+    text-align: center;
+    font-size: clamp(0.78rem, 1.3vw, 0.88rem);
+  }
+
+  .closing p::first-letter { all: unset; }
+
+  .closing .personal {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(0.88rem, 1.6vw, 1.05rem);
+    color: var(--pink);
+  }
+
+  /* ── FOOTER ── */
+  .newspaper-footer {
+    text-align: center;
+    border-top: 3px double var(--divider);
+    padding-top: 0.6rem;
+    margin-top: 1.25rem;
+  }
+
+  .footer-text {
+    font-family: 'Lato', sans-serif;
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  .footer-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    font-style: italic;
+    color: var(--pink);
+    margin: 0.25rem 0;
+  }
+
+  .star {
+    position: fixed;
+    color: var(--gold);
+    font-size: 0.6rem;
+    opacity: 0;
+    animation: starFade linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  @keyframes starFade {
+    0%,100% { opacity: 0; transform: scale(0.5); }
+    50%      { opacity: 0.25; transform: scale(1); }
+  }
+</style>
+</head>
+<body>
+
+<script>
+  const stars = ['✦','✧','⋆','·'];
+  for (let i = 0; i < 12; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.textContent = stars[Math.floor(Math.random() * stars.length)];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.top  = Math.random() * 100 + 'vh';
+    s.style.animationDuration = (4 + Math.random() * 6) + 's';
+    s.style.animationDelay   = (Math.random() * 6) + 's';
+    document.body.appendChild(s);
+  }
+</script>
+
+  <header class="newspaper-header">
+    <div class="kingdom-label">Official Publication of the Fairy Realm · Est. The First Dawn of Time</div>
+    <h1 class="newspaper-title">The Fairy Kingdom Gazette</h1>
+    <p class="newspaper-subtitle">Chronicles of the Fairy Realm · Dedicated to Her Majesty</p>
+    <div class="header-meta">
+      <span>Vol. XVIII · No. 23</span>
+      <span>✦ March 23rd ✦</span>
+      <span>One Enchanted Copy · Priceless</span>
+    </div>
+  </header>
+
+  <div class="divider">✦ &nbsp; ✦ &nbsp; ✦</div>
+
+  <section class="headline-section">
+    <div class="edition-tag">✦ Special Birthday Edition ✦</div>
+    <h2 class="main-headline">Fairy Queen Turns 18 Today —<br><em>All in the Kingdom Rejoice</em></h2>
+    <p class="deck">On this most blessed of days, all within the kingdom show their respect and celebrate the day of birth of their great leader, the Fairy Queen.</p>
+  </section>
+
+  <div class="columns">
+
+    <div class="col">
+      <div class="col-label">A Message From Her Loyal Advisor</div>
+      <p>I have stood beside her through many eras of our kingdom. She is not just our leader — she is the face of kindness, hope and love. In many moments she has been the guiding light not only for me, but for all our citizens. She is truly a being of pure light.</p>
+      <p>I am but a simple man, not what you would call gifted. Yet she saw something special within me and took me in as her advisor. She has since then continued to show me how amazing she is every single day. I am so thankful to be her advisor.</p>
+
+      <div class="pull-quote">
+        <p>"In every lifetime, I wish to be her advisor. I would always want to be chosen by her to relive this story."</p>
+        <cite>— Her Loyal Advisor</cite>
+      </div>
+    </div>
+
+    <div class="col-divider"></div>
+
+    <div class="col">
+      <div class="col-label">Who She Is</div>
+      <p>There's something about the way she smiles that's hard to put into words. It's warm, the way sunlight is warm, not overwhelming. Just exactly what you needed without knowing you needed it. It finds you where you are.</p>
+      <p>Her eyes carry something too. Deep and quiet, like the night sky on a clear night, full of stars you could spend forever trying to count. Look into them long enough and you start seeing more than just stars, the whole universe is in them, just sitting still and glowing.</p>
+
+      <div class="pull-quote">
+        <p>"The fairy queen has always been my role model, her kindness, beauty and compassion are truly otherworldly."</p>
+        <cite>— An admiring citizen </cite>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="closing">
+    <h3 class="closing-headline">Happy Birthday, Aneeqah!!</h3>
+    <p>You turned 18 today and the whole kingdom is ecstatic about it. Not because of what you've done, though that's plenty but because of who you are. The kind of person who makes the people around her feel seen, and safe, and enough.</p>
+    <p class="personal">This kingdom has always been yours. And so, completely and without reservation, has this heart. Happy birthday, sweetu.</p>
+  </section>
+
+  <footer class="newspaper-footer">
+    <div class="footer-text">Printed with love · On the morning of her eighteenth year</div>
+    <div class="footer-name">Aneeqah ✦</div>
+    <div class="footer-text">Long may she reign · Long may she smile · Long may she know she is loved</div>
+  </footer>
+
+</body>
+</html>
